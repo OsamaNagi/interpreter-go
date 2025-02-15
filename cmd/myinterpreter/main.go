@@ -33,6 +33,10 @@ func main() {
 			fmt.Printf("LEFT_PAREN %c null\n", lex)
 		case ')':
 			fmt.Printf("RIGHT_PAREN %c null\n", lex)
+		case '{':
+			fmt.Printf("LEFT_BRACE %c null\n", lex)
+		case '}':
+			fmt.Printf("RIGHT_BRACE %c null\n", lex)
 		}
 	}
 	fmt.Println("EOF  null")

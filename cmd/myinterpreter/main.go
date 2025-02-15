@@ -27,9 +27,13 @@ func main() {
 		os.Exit(1)
 	}
 
-	if len(fileContents) > 0 {
-		panic("Scanner not implemented")
-	} else {
-		fmt.Println("EOF  null") // Placeholder, remove this line when implementing the scanner
+	for _, lex := range fileContents {
+		switch lex {
+		case '(':
+			fmt.Printf("LEFT_PAREN %c null\n", lex)
+		case ')':
+			fmt.Printf("RIGHT_PAREN %c null\n", lex)
+		}
 	}
+	fmt.Println("EOF  null")
 }

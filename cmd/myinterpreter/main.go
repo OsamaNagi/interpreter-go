@@ -49,6 +49,8 @@ func main() {
 			fmt.Printf("SEMICOLON %c null\n", lex)
 		case '*':
 			fmt.Printf("STAR %c null\n", lex)
+		default:
+			fmt.Printf("[line 1] Error: Unexpected character: %c\n", lex)
 		}
 	}
 	fmt.Println("EOF  null")

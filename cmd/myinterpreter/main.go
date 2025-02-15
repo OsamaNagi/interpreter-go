@@ -37,6 +37,18 @@ func main() {
 			fmt.Printf("LEFT_BRACE %c null\n", lex)
 		case '}':
 			fmt.Printf("RIGHT_BRACE %c null\n", lex)
+		case ',':
+			fmt.Printf("COMMA %c null\n", lex)
+		case '.':
+			fmt.Printf("DOT %c null\n", lex)
+		case '-':
+			fmt.Printf("MINUS %c null\n", lex)
+		case '+':
+			fmt.Printf("PLUS %c null\n", lex)
+		case ';':
+			fmt.Printf("SEMICOLON %c null\n", lex)
+		case '*':
+			fmt.Printf("STAR %c null\n", lex)
 		}
 	}
 	fmt.Println("EOF  null")

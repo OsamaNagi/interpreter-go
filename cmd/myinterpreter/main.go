@@ -29,10 +29,20 @@ func main() {
 
 	hasError := false
 
-	for _, lex := range fileContents {
+	for i := 0; i < len(fileContents); i++ {
+		lex := fileContents[i]
+
 		switch lex {
 		case '(', ')', '{', '}', ',', '.', '-', '+', ';', '*':
 			fmt.Printf("%s %c null\n", getTokenName(lex), lex)
+
+		case '=':
+			if i+1 < len(fileContents) && fileContents[i+1] == '=' {
+				fmt.Println("EQUAL_EQUAL == null")
+				i++
+			} else {
+				fmt.Println("EQUAL = null")
+			}
 		default:
 			fmt.Fprintf(os.Stderr, "[line 1] Error: Unexpected character: %c\n", lex)
 			hasError = true

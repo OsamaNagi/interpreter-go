@@ -35,13 +35,19 @@ func main() {
 		switch lex {
 		case '(', ')', '{', '}', ',', '.', '-', '+', ';', '*':
 			fmt.Printf("%s %c null\n", getTokenName(lex), lex)
-
 		case '=':
 			if i+1 < len(fileContents) && fileContents[i+1] == '=' {
 				fmt.Println("EQUAL_EQUAL == null")
 				i++
 			} else {
 				fmt.Println("EQUAL = null")
+			}
+		case '!':
+			if i+1 < len(fileContents) && fileContents[i+1] == '=' {
+				fmt.Println("BANG_EQUAL != null")
+				i++
+			} else {
+				fmt.Println("BANG ! null")
 			}
 		default:
 			fmt.Fprintf(os.Stderr, "[line 1] Error: Unexpected character: %c\n", lex)

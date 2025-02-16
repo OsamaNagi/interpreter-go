@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"unicode"
 )
 
 func main() {
@@ -31,6 +32,10 @@ func main() {
 
 	for i := 0; i < len(fileContents); i++ {
 		lex := fileContents[i]
+
+		if unicode.IsSpace(rune(lex)) {
+			continue
+		}
 
 		switch lex {
 		case '(', ')', '{', '}', ',', '.', '-', '+', ';', '*':

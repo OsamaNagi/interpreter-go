@@ -84,12 +84,20 @@ func main() {
 			} else {
 				fmt.Println("SLASH / null")
 			}
+		case '"':
+			newIndex, errOccurred := scanString(fileContents, i, line)
+			if errOccurred {
+				hasError = true
+				goto end
+			}
+			i = newIndex
 		default:
 			fmt.Fprintf(os.Stderr, "[line %d] Error: Unexpected character: %c\n", line, lex)
 			hasError = true
 		}
 	}
 
+end:
 	fmt.Println("EOF  null")
 
 	if hasError {
@@ -123,4 +131,27 @@ func getTokenName(ch byte) string {
 		return "STAR"
 	}
 	return "UNKNOWN"
+}
+
+func scanString(contents []byte, start int, line int) (int, bool) {
+	i := start + 1
+	for i < len(contents) && contents[i] != '"' {
+		if contents[i] == '\n' {
+			fmt.Fprintf(os.Stderr, "[line %d] Error: Unterminated string.\n", line)
+			return i, true
+		}
+		i++
+	}
+
+	if i >= len(contents) {
+		fmt.Fprintf(os.Stderr, "[line %d] Error: Unterminated string.\n", line)
+		return i, true
+	}
+
+	literal := string(contents[start+1 : i])
+	lexeme := string(contents[start : i+1])
+
+	fmt.Printf("STRING %s %s\n", lexeme, literal)
+
+	return i, false
 }

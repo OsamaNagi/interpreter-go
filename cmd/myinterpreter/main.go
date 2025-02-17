@@ -29,9 +29,15 @@ func main() {
 	}
 
 	hasError := false
+	line := 1
 
 	for i := 0; i < len(fileContents); i++ {
 		lex := fileContents[i]
+
+		if lex == '\n' {
+			line++
+			continue
+		}
 
 		if unicode.IsSpace(rune(lex)) {
 			continue
@@ -73,11 +79,13 @@ func main() {
 				for i < len(fileContents) && fileContents[i] != '\n' {
 					i++
 				}
+				i--
+				continue
 			} else {
 				fmt.Println("SLASH / null")
 			}
 		default:
-			fmt.Fprintf(os.Stderr, "[line 1] Error: Unexpected character: %c\n", lex)
+			fmt.Fprintf(os.Stderr, "[line %d] Error: Unexpected character: %c\n", line, lex)
 			hasError = true
 		}
 	}

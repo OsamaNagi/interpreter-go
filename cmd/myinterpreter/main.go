@@ -43,6 +43,16 @@ func main() {
 			continue
 		}
 
+		if unicode.IsDigit(rune(lex)) {
+			newIndex, errOccurred := scanNumber(fileContents, i, line)
+			if errOccurred {
+				hasError = true
+				break
+			}
+			i = newIndex
+			continue
+		}
+
 		switch lex {
 		case '(', ')', '{', '}', ',', '.', '-', '+', ';', '*':
 			fmt.Printf("%s %c null\n", getTokenName(lex), lex)
@@ -154,4 +164,20 @@ func scanString(contents []byte, start int, line int) (int, bool) {
 	fmt.Printf("STRING %s %s\n", lexeme, literal)
 
 	return i, false
+}
+
+func scanNumber(contents []byte, start int, line int) (int, bool) {
+	i := start
+	for i < len(contents) && unicode.IsDigit(rune(contents[i])) {
+		i++
+	}
+	if i < len(contents) && contents[i] == '.' && i+1 < len(contents) && unicode.IsDigit(rune(contents[i+1])) {
+		i++
+		for i < len(contents) && unicode.IsDigit(rune(contents[i])) {
+			i++
+		}
+	}
+	lexeme := string(contents[start:i])
+	fmt.Printf("NUMBER %s %s\n", lexeme, lexeme)
+	return i - 1, false
 }

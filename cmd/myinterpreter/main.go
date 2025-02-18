@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings" // added
 	"unicode"
 )
 
@@ -168,16 +169,44 @@ func scanString(contents []byte, start int, line int) (int, bool) {
 
 func scanNumber(contents []byte, start int, line int) (int, bool) {
 	i := start
+
 	for i < len(contents) && unicode.IsDigit(rune(contents[i])) {
 		i++
 	}
+
+	isFloat := false
+
 	if i < len(contents) && contents[i] == '.' && i+1 < len(contents) && unicode.IsDigit(rune(contents[i+1])) {
+		isFloat = true
 		i++
 		for i < len(contents) && unicode.IsDigit(rune(contents[i])) {
 			i++
 		}
 	}
+
 	lexeme := string(contents[start:i])
-	fmt.Printf("NUMBER %s %s\n", lexeme, lexeme)
+	var literal string
+	if isFloat {
+		parts := strings.Split(lexeme, ".")
+		if len(parts) == 2 {
+			allZeros := true
+			for _, ch := range parts[1] {
+				if ch != '0' {
+					allZeros = false
+					break
+				}
+			}
+			if allZeros {
+				literal = parts[0] + ".0"
+			} else {
+				literal = lexeme
+			}
+		} else {
+			literal = lexeme
+		}
+	} else {
+		literal = lexeme + ".0"
+	}
+	fmt.Printf("NUMBER %s %s\n", lexeme, literal)
 	return i - 1, false
 }

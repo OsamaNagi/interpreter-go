@@ -56,7 +56,13 @@ func main() {
 
 		if unicode.IsLetter(rune(lex)) || lex == '_' {
 			newIndex, ident := scanIdentifier(fileContents, i)
-			fmt.Printf("IDENTIFIER %s null\n", ident)
+
+			lexemeType := getIdentifierType(ident)
+			if lexemeType != "IDENTIFIER" {
+				fmt.Printf("%s %s null\n", lexemeType, ident)
+			} else {
+				fmt.Printf("IDENTIFIER %s null\n", ident)
+			}
 			i = newIndex
 			continue
 		}
@@ -149,6 +155,44 @@ func getTokenName(ch byte) string {
 		return "STAR"
 	}
 	return "UNKNOWN"
+}
+
+func getIdentifierType(ident string) string {
+	switch ident {
+	case "and":
+		return "AND"
+	case "class":
+		return "CLASS"
+	case "else":
+		return "ELSE"
+	case "false":
+		return "FALSE"
+	case "for":
+		return "FOR"
+	case "fun":
+		return "FUN"
+	case "if":
+		return "IF"
+	case "nil":
+		return "NIL"
+	case "or":
+		return "OR"
+	case "print":
+		return "PRINT"
+	case "return":
+		return "RETURN"
+	case "super":
+		return "SUPER"
+	case "this":
+		return "THIS"
+	case "true":
+		return "TRUE"
+	case "var":
+		return "VAR"
+	case "while":
+		return "WHILE"
+	}
+	return "IDENTIFIER"
 }
 
 func scanString(contents []byte, start int, line int) (int, bool) {

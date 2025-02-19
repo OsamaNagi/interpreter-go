@@ -54,6 +54,13 @@ func main() {
 			continue
 		}
 
+		if unicode.IsLetter(rune(lex)) || lex == '_' {
+			newIndex, ident := scanIdentifier(fileContents, i)
+			fmt.Printf("IDENTIFIER %s null\n", ident)
+			i = newIndex
+			continue
+		}
+
 		switch lex {
 		case '(', ')', '{', '}', ',', '.', '-', '+', ';', '*':
 			fmt.Printf("%s %c null\n", getTokenName(lex), lex)
@@ -209,4 +216,13 @@ func scanNumber(contents []byte, start int, line int) (int, bool) {
 	}
 	fmt.Printf("NUMBER %s %s\n", lexeme, literal)
 	return i - 1, false
+}
+
+func scanIdentifier(contents []byte, start int) (int, string) {
+	i := start
+	for i < len(contents) && (unicode.IsLetter(rune(contents[i])) || unicode.IsDigit(rune(contents[i])) || contents[i] == '_') {
+		i++
+	}
+	ident := string(contents[start:i])
+	return i - 1, ident
 }
